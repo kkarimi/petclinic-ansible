@@ -1,0 +1,6 @@
+---
+
+- include: sourcecode.yml
+- include: configure.yml
+- include: build.yml
+- include: provision.yml

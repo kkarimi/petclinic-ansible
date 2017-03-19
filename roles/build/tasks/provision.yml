@@ -1,0 +1,12 @@
+---
+
+- name: Add web server hosts
+  add_host:
+    hostname: webserver
+    groups: webservers
+    ansible_ssh_host: "{{ provision.public_ip }}"
+    ansible_ssh_port: "{{ provision.ssh_port }}"
+    ansible_ssh_user: "{{ deploy_ssh_user }}"
+    ansible_ssh_pass: "{{ deploy_ssh_pass }}"
+    ansible_sudo_pass: "{{ deploy_ssh_pass }}"
+    ansible_python_interpreter: "{{ provision.python_path }}"

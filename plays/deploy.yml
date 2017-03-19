@@ -1,0 +1,18 @@
+---
+#  Build and Deploys PetsClinic App
+
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - build
+
+- hosts: webservers
+  gather_facts: no
+  become: yes
+  roles:
+    - deploy
+
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - post-build

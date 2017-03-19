@@ -1,0 +1,17 @@
+---
+
+- name: Wait until web server is up
+  wait_for:
+    host: "{{ deploy.public_ip }}"
+    port: "{{ deploy.http_port }}"
+    delay: 5
+    timeout: 180
+
+- name: Wait until app is ready
+  shell: "until curl -l {{ deploy.public_ip }}:{{deploy.http_port }} | grep -m 1 \"Welcome\"; do : sleep 1; done"
+  async: 180
+  poll: 5
+
+- name: Print app deployment info
+  debug:
+    msg: App is now available at http://{{ deploy.public_ip }}:{{ deploy.http_port }}

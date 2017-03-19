@@ -1,0 +1,49 @@
+---
+
+- name: Ensure Tomcat Root App does not exist
+  file:
+    path: "{{ deploy.tomcat_path }}/ROOT"
+    state: absent
+
+- name: Copy Application to Tomcat
+  copy:
+    src: "{{ item }}"
+    dest: "{{ deploy.tomcat_path }}/ROOT.war"
+    owner: tomcat7
+    group: tomcat7
+  with_fileglob:
+    - "{{ deploy.build_path }}/target/*.war"
+
+
+- name: Deploy external app config for data source
+  copy:
+    dest: "{{ deploy.custom_config_path }}"
+    content: "dataSource { url = \"jdbc:h2:{{ deploy.path }}/db/prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE\" }"
+
+- name: Ensure App DB directory exists
+  file:
+    path: "{{ deploy.path }}/db"
+    state: directory
+    recurse: true
+    owner: tomcat7
+    group: tomcat7
+
+- name: Restart tomcat
+  service:
+    name: tomcat7
+    state: restarted
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Copy nginx proxy configuration
+  template:
+    src: default.conf
+    dest: /etc/nginx/sites-enabled/default.conf
+
+- name: Restart nginx
+  service:
+    name: tomcat7
+    state: restarted

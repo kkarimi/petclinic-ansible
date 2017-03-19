@@ -1,0 +1,6 @@
+---
+
+- name: Configure app to accept custom config
+  lineinfile:
+    dest: "{{ build.path }}/grails-app/conf/Config.groovy"
+    line: "grails.config.locations = [\"classpath:${appName}-config.groovy\"]"

@@ -1,0 +1,9 @@
+---
+
+- name: Build application
+  shell: ./grailsw war
+  args:
+    chdir: "{{ build.path }}"
+    creates: "target/{{ petclinic.app_name }}-{{ petclinic.app_version }}.war"
+  environment:
+      JAVA_HOME: "{{ build.java_path }}"

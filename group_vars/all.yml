@@ -1,0 +1,24 @@
+petclinic:
+  app_name: petclinic
+  app_version: "4.0"
+  git_repo: https://github.com/secretescapes/grails-petclinic
+  release_version: "{{ lookup('env','RELEASE_VERSION') | default('master', true) }}"
+
+build:
+  path: /tmp/petclinic
+  java_path: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home
+
+provision:
+  user: devops
+  group: devops
+  public_ip: "{{ lookup('env','SERVER_IP') }}"
+  ssh_port: 22
+  python_path: /usr/bin/python3
+
+deploy:
+  build_path: /tmp/petclinic
+  path: "/srv/petclinic"
+  tomcat_path: /var/lib/tomcat7/webapps
+  custom_config_path: /usr/share/tomcat7/lib/petclinic-config.groovy
+  public_ip: "{{ lookup('env','SERVER_IP') }}"
+  http_port: 80
