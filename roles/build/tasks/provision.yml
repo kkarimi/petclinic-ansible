@@ -1,5 +1,9 @@
 ---
 
+- name: Load deployment secrets
+  include_vars: "{{ inventory_dir }}/group_vars/secrets.vault.yml"
+  no_log: true
+
 - name: Add web server hosts
   add_host:
     hostname: webserver
