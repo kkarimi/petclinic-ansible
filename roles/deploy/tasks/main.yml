@@ -27,23 +27,18 @@
     recurse: true
     owner: tomcat7
     group: tomcat7
-
-- name: Restart tomcat
-  service:
-    name: tomcat7
-    state: restarted
+  notify:
+    - Restart tomcat
 
 - name: Install nginx
   apt:
     name: nginx
     state: present
+    update_cache: true
 
 - name: Copy nginx proxy configuration
   template:
     src: default.conf
     dest: /etc/nginx/sites-enabled/default.conf
-
-- name: Restart nginx
-  service:
-    name: tomcat7
-    state: restarted
+  notify:
+    - Restart nginx
