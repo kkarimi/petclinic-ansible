@@ -14,7 +14,6 @@
   with_fileglob:
     - "{{ deploy.build_path }}/target/*.war"
 
-
 - name: Deploy external app config for data source
   copy:
     dest: "{{ deploy.custom_config_path }}"
@@ -39,6 +38,6 @@
 - name: Copy nginx proxy configuration
   template:
     src: default.conf
-    dest: /etc/nginx/sites-enabled/default.conf
+    dest: /etc/nginx/sites-enabled/default
   notify:
     - Restart nginx
